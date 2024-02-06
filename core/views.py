@@ -20,10 +20,16 @@ def login_view(request):
             graph = GraphDatabase.driver(uri, auth=(username, password))
             with graph.session() as session:
                 # Attempt to execute a simple query to ensure the connection is valid
-                result = session.run("RETURN 1")
+                
+                result = session.run("SHOW DATABASES;")
+                databasesNames = list()
+                for record in result:
+                    databasesNames.append(record["name"])
+                exit
+                # result = session.run("RETURN 1")
             
 
-            return render(request, 'success.html', {'username': username})
+            return render(request, 'success.html', {'username': username, "databases": databasesNames})
 
         except Exception as e:
             # Connection to Neo4j failed
