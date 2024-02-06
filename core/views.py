@@ -38,3 +38,68 @@ def login_view(request):
             return render(request, 'login.html', {'error': error_message})
         
     return render(request, 'login.html')
+
+def serialize_node(node):
+    # Convert Neo4j node to a dictionary
+    return {
+        'id': node.id,
+        'labels': list(node.labels),
+        'properties': dict(node),
+    }
+def serialize_rel(rel):
+    # Convert Neo4j node to a dictionary
+    return {
+        'id': rel.element_id,
+        "source":rel.nodes[0].element_id,
+        "target":rel.nodes[1].element_id,
+        'type': list(rel.type),
+        'properties': dict(rel._properties),
+    }
+def show_graph(request, database_name):
+    try:
+        uri = "bolt://localhost:7687"  # Update with your Neo4j database URI
+        username = "neo4j"  # Update with your Neo4j username
+        password = "mimou17"  # Update with your Neo4j password
+
+        # graph = GraphDatabase.driver(uri, auth=(username, password))
+
+        # nodes =list()
+        # with graph.session(database=database_name) as session:
+        #     result = session.run("MATCH (n) RETURN n LIMIT 10")
+        #     nodes = [serialize_node(record["n"]) for record in result]
+                # for record in result:
+                    # databasesNames.append(record["name"])
+                # exit
+        with GraphDatabase.driver(uri, auth=(username, password)) as driver:
+
+            records, summary, keys = driver.execute_query(
+                "MATCH (n)-[r]->(m) RETURN n, r, m LIMIT 15",
+                database_="neo4j",
+                )
+            serialized_nodes =[]
+            unique_nodes =set()
+            serialized_rels =[]
+            for record in records:
+                
+                node_a = serialize_node(record[0])
+                node_b = serialize_node(record[2])
+                # Check if the ID is already in the set
+                if node_a['id'] not in unique_nodes:
+                    unique_nodes.add(node_a['id'])
+                    serialized_nodes.append(node_a)
+
+                if node_b['id'] not in unique_nodes:
+                    unique_nodes.add(node_b['id'])
+                    serialized_nodes.append(node_b)
+
+                rel= serialize_rel(record[1])
+                serialized_rels.append(rel)
+                
+
+        # nodes = [record["n"] for record in result]
+        return render(request, 'show_graph.html', {'database_name': database_name, 'nodes': serialized_nodes, 'rels': serialized_rels})
+
+    except Exception as e:
+        error_message = f"Error querying Neo4j: {str(e)}"
+        return render(request, 'error.html', {'error': error_message})
+    
