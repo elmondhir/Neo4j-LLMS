@@ -20,9 +20,9 @@
             <p>Connected to Neo4j database: {{ database_name }}</p>
             <br>
             <!-- <p>your list of databases: {{ databases }}</p> -->
-            <p>Selec your database</p>
+            <p>Select your database</p>
             {% for database in databases %}
-                <a href="" class="btn btn-primary btn-lg btn-block mb-2">{{ database }}</a>
+                <a href="{% url 'show_graph' database %}" class="btn btn-primary btn-lg btn-block mb-2">{{ database }}</a>
             {% endfor %}
         </div>
     </div>
