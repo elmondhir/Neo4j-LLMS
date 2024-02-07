@@ -31,10 +31,10 @@ Follow these steps to get started with Neoj_LLMs:
 
 5. Run the application:
     ```bash
-    python app.py
+    python -B app.py
     ```
 
-6. Open your browser and go to [http://localhost:5000](http://localhost:5000) to access the Neoj_LLMs interface.
+6. Open your browser and go to [http://localhost:8000](http://localhost:8000) to access the Neoj_LLMs interface.
 
 ## Usage
 
