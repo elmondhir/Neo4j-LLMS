@@ -31,7 +31,7 @@ Follow these steps to get started with Neoj_LLMs:
 
 5. Run the application:
     ```bash
-    python -B app.py
+    python -B manage.py runserver
     ```
 
 6. Open your browser and go to [http://localhost:8000](http://localhost:8000) to access the Neoj_LLMs interface.
@@ -66,7 +66,7 @@ Follow these steps:
     docker-compose up
     ```
 
-3. Open your browser and go to [http://localhost:5000](http://localhost:5000) to access the Neoj_LLMs interface.
+3. Open your browser and go to [http://localhost:8000](http://localhost:8000) to access the Neoj_LLMs interface.
 
 ## Contributing
 
