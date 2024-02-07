@@ -7,20 +7,49 @@
     <title>Show Graph</title>
     <!-- Bootstrap CSS link -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh; /* 100% of the viewport height */
+          margin: 0; /* Remove default body margin */
+        }
+    
+        #mt-5 {
+        text-align: center; /* Center the content horizontally within the outer container */
+        }
+        #graph-container {
+          position: relative;
+          overflow: hidden;
+          display: inline-block;
+          width: 800px; 
+          height: 600px;
+          border: 1px solid #ccc; /* Optional: Add a border for better visualization */
+        }
+    
+        #svg {
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+      </style>
     <script src="https://d3js.org/d3.v5.min.js"></script>
 </head>
 <body class="bg-light">
 
-<div class="container mt-5">
+<div class="container mt-5" id="mt-5" >
     <h2 class="text-center">Graph for Database: {{ database_name }}</h2>
 
-    <!-- <div id="graph-container" style="width: 800px; height: 600px;"></div> -->
+    <div id="graph-container">
     <svg
+    id ="svg"
+    style="position: absolute; top: 0; left: 0;"
       version="1.1"
       baseProfile="full"
       xmlns="http://www.w3.org/2000/svg"
     ></svg>
-
+    </div>
 <!-- 
     {% if nodes %}
         <ul>
@@ -56,8 +85,12 @@
     var svg = d3
   .select("svg")
   .attr("width", width)
-  .attr("height", height);
+  .attr("height", height)
+  .call(d3.zoom().on("zoom", function () {
+       svg.attr("transform", d3.event.transform)
+    }));
 
+    
 var linkSelection = svg
   .selectAll("line")
   .data(links)
@@ -88,7 +121,7 @@ var nodeSelection = svg
   .append("text")
   .text(d => { 
     // console.log(d.properties.name);
-    return d.properties.name || d.id})  // Adjust this line based on your node data structure
+    return d.properties.name || d.properties.title || d.id})  // Adjust this line based on your node data structure
   .attr("x", d => d.x)
   .attr("y", d => d.y)
   .attr("dy", -15)
