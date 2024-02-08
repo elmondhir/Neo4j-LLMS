@@ -64,23 +64,29 @@
 
 <!-- Bootstrap JS and Popper.js -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
 
 
 {{ nodes |json_script:"mynodes" }}
 {{ rels |json_script:"myrels" }}
+{{ unique_labels |json_script:"mylables"}}
 
 <script>
     // JavaScript code for rendering the directed graph using D3.js
-    // const nodes = {{ nodes|safe }};
+
     var width = 600;
     var height = 600;
 
     var nodes = JSON.parse(document.getElementById('mynodes').textContent);
     var links = JSON.parse(document.getElementById('myrels').textContent);
+    var labels = JSON.parse(document.getElementById('mylables').textContent);
 
-    console.log(links);
+    // var colorScale = d3.scaleOrdinal()
+    // .domain(Array.from(colors))
+    // .range(d3.schemeCategory10);
+    // console.log(colorScale);
 
     var svg = d3
   .select("svg")
@@ -99,13 +105,20 @@ var linkSelection = svg
   .attr("stroke", "black")
   .attr("stroke-width", 1);
 
+var myColor = d3.scaleSequential().domain([1,10])
+  .interpolator(d3.interpolateViridis)
+
+var colorScale = d3.scaleOrdinal(d3.schemeCategory10).domain(labels);
+
 var nodeSelection = svg
   .selectAll("circle")
   .data(nodes)
   .enter()
   .append("circle")
-  .attr("r", 10)
-  .attr("fill", "red")
+  .attr("r", 15)
+  .attr("fill", function(d){
+    return colorScale(d.labels[0]) }) // Use the color scale (only works with one node label)
+  // .attr("fill", "red")
   .call(
     d3
       .drag()
