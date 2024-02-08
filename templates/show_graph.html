@@ -139,6 +139,26 @@ var nodeSelection = svg
   .attr("y", d => d.y)
   .attr("dy", -15)
 
+// add legend
+
+// Add legend using HTML and CSS for absolute positioning
+var legendContainer = d3.select("#graph-container") // Assuming the ID of your graph container is "graph-container"
+    .append("div")
+    .attr("id", "legend-container")
+    .style("position", "absolute")
+    .style("top", "10px")
+    .style("left", "10px");
+
+legendContainer.selectAll("mylabels")
+    .data(labels)
+    .enter()
+    .append("div")
+    .style("display", "flex")
+    .style("align-items", "center")
+    .html(function (d) {
+        return '<svg width="10" height="10" style="margin-right: 5px;"><circle cx="5" cy="5" r="5" fill="' + colorScale(d) + '"/></svg>' + d;
+    });
+
 var simulation = d3.forceSimulation(nodes);
 
 function boundForce(width, height) {
