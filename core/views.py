@@ -61,15 +61,7 @@ def show_graph(request, database_name):
         username = "neo4j"  # Update with your Neo4j username
         password = "mimou17"  # Update with your Neo4j password
 
-        # graph = GraphDatabase.driver(uri, auth=(username, password))
 
-        # nodes =list()
-        # with graph.session(database=database_name) as session:
-        #     result = session.run("MATCH (n) RETURN n LIMIT 10")
-        #     nodes = [serialize_node(record["n"]) for record in result]
-                # for record in result:
-                    # databasesNames.append(record["name"])
-                # exit
         with GraphDatabase.driver(uri, auth=(username, password)) as driver:
 
             records, summary, keys = driver.execute_query(
@@ -79,6 +71,7 @@ def show_graph(request, database_name):
             serialized_nodes =[]
             unique_nodes =set()
             serialized_rels =[]
+            
             for record in records:
                 
                 node_a = serialize_node(record[0])
@@ -95,9 +88,20 @@ def show_graph(request, database_name):
                 rel= serialize_rel(record[1])
                 serialized_rels.append(rel)
                 
+        with GraphDatabase.driver(uri, auth=(username, password)) as driver:
+            records, summary, keys = driver.execute_query(
+            "MATCH (n) RETURN distinct labels(n)",
+            database_="neo4j")
+            
+            ### Get unique lables
+            unique_labels = set()
+
+            for record in records:
+                unique_labels.update(record[0]) 
+            
 
         # nodes = [record["n"] for record in result]
-        return render(request, 'show_graph.html', {'database_name': database_name, 'nodes': serialized_nodes, 'rels': serialized_rels})
+        return render(request, 'show_graph.html', {'database_name': database_name, 'nodes': serialized_nodes, 'rels': serialized_rels, "unique_labels":list(unique_labels)})
 
     except Exception as e:
         error_message = f"Error querying Neo4j: {str(e)}"
