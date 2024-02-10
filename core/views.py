@@ -2,14 +2,14 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
-
+import os
 
 from neo4j import GraphDatabase
 from . import translator
 # Create your views here.
 
-def home(request):
-    return(HttpResponse("Hello World"))
+# def home(request):
+#     return(HttpResponse("Hello World"))
 
 def login_view(request):
     if request.method == 'POST':
@@ -31,7 +31,10 @@ def login_view(request):
                 # result = session.run("RETURN 1")
             
 
-            return render(request, 'success.html', {'username': username, "databases": databasesNames})
+            os.environ['NEOJ_USERNAME'] = username
+            os.environ['NEOJ_PASSWORD'] = password
+
+            return render(request, 'success.html', {'username': username, 'password': password, "databases": databasesNames})
 
         except Exception as e:
             # Connection to Neo4j failed
@@ -60,9 +63,8 @@ def serialize_rel(rel):
 def show_graph(request, database_name):
     try:
         uri = "bolt://localhost:7687"  # Update with your Neo4j database URI
-        username = "neo4j"  # Update with your Neo4j username
-        password = "mimou17"  # Update with your Neo4j password
-
+        username = os.getenv('NEOJ_USERNAME')
+        password = os.getenv('NEOJ_PASSWORD')
 
         with GraphDatabase.driver(uri, auth=(username, password)) as driver:
 
