@@ -49,11 +49,11 @@ Follow these steps to get started with Neoj_LLMs:
 ## Screenshots
 
 ### First you need to login to your neo4 instance:
-![Alt text](screenshots/login.png?raw=true "Title")
+<img src="screenshots/login.png" alt="Login Screenshot" width="600"/>
 ### Then you chose which database you want to work with:
-![Alt text](screenshots/select_db.png?raw=true "Title")
+<img src="screenshots/select_db.png" alt="Login Screenshot" width="600"/>
 ### Finally you input your prompt and HF token:
-![Alt text](screenshots/example1.png?raw=true "Title")
+<img src="screenshots/example1.png" alt="Login Screenshot" width="600"/>
 ## Running with Docker
 
 To run Neoj_LLMs using Docker, make sure Docker is installed on your machine. If not, you can download and install Docker from the [official Docker website](https://www.docker.com/get-started).
