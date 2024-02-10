@@ -40,17 +40,20 @@ def generate(question, model_name, MY_API_KEY,  template: False):
             "inputs": prompt, "wait_for_model":True
         }, API_URL= CodeLlama_API_URL, headers=headers)
 
-        diff = output[0]["generated_text"].replace(prompt, "") # remove the duplicate prompt text from the output
+        try:
+            diff = output[0]["generated_text"].replace(prompt, "") # remove the duplicate prompt text from the output
 
-        pattern = r'### Response:\s*([\S\s]*?)\s*(?=### Input:|$)'
+            pattern = r'### Response:\s*([\S\s]*?)\s*(?=### Input:|$)'
 
-        match = re.search(pattern, diff)
+            match = re.search(pattern, diff)
 
-        if match:
-            extracted_text = match.group(1)
-            return extracted_text
-        else:
-            return "No match found."
+            if match:
+                extracted_text = match.group(1)
+                return extracted_text
+            else:
+                return "No match found."
+        except KeyError:
+            return output
         
 
     else: # case of model deepseeker
