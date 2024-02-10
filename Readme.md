@@ -16,8 +16,8 @@ Follow these steps to get started with Neoj_LLMs:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/Neoj_LLMs.git
-    cd Neoj_LLMs
+    git clone https://github.com/elmondhir/Neo4j-LLMS.git
+    cd Neoj-LLMs
     ```
 
 2. Install dependencies:
@@ -48,8 +48,12 @@ Follow these steps to get started with Neoj_LLMs:
 
 ## Screenshots
 
-Insert screenshots here to showcase the Neoj_LLMs interface.
-
+### First you need to login to your neo4 instance:
+![Alt text](screenshots\login.png?raw=true "Title")
+### Then you chose which database you want to work with:
+![Alt text](screenshots\select_db.png?raw=true "Title")
+### Finally you input your prompt and HF token:
+![Alt text](screenshots\example1.png?raw=true "Title")
 ## Running with Docker
 
 To run Neoj_LLMs using Docker, make sure Docker is installed on your machine. If not, you can download and install Docker from the [official Docker website](https://www.docker.com/get-started).
@@ -70,12 +74,4 @@ Follow these steps:
 
 ## Contributing
 
-We welcome contributions! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request. Follow our [contribution guidelines](CONTRIBUTING.md).
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-Neoj_LLMs aims to simplify the process of querying Neo4j databases by combining natural language interaction with powerful Language Model Models. Whether you are a beginner or an experienced user, we hope Neoj_LLMs enhances your experience in querying Neo4j databases. If you have any questions or need assistance, don't hesitate to open an issue or reach out to us. Happy querying!
+We welcome contributions! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
